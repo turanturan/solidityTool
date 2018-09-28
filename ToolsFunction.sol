@@ -27,9 +27,18 @@ contract ToolsFunction {
     
     // bytes32 to bytes
     function bytes32ToBytes(bytes32 by) internal pure returns (bytes) {
-        bytes memory ret = new bytes(by.length);
+        uint256 length = 0;
         
-        for(uint i = 0; i < by.length; i++) {
+        for(uint256 i=0; i<by.length; ++i) {
+            if (compareBytes(by[i], 0x00)) {
+                length = i;
+                break;
+            }
+        }
+        
+        bytes memory ret = new bytes(length);
+        
+        for(i=0; i<length; ++i) {
             ret[i] = by[i];
         }
         
